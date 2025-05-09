@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.rainbow-border {
+    border: 3px solid;
+    border-image: linear-gradient(
+      45deg,
+      red,
+      orange,
+      yellow,
+      green,
+      blue,
+      indigo,
+      violet
+    ) 1;
+    border-radius: 0.5rem; /* Or use Tailwind's rounded-lg */
+  }
+  @keyframes blinkPulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(1.02);
+    }
+  }
+  
+  .blink-animation {
+    animation: blinkPulse 1.8s ease-in-out infinite;
+  }
+  .location-border {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+  
+  .location-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(
+      from 0deg,
+      #00f,
+      #0ff,
+      #0f0,
+      #ff0,
+      #f00,
+      #00f
+    );
+    animation: spinBorder 2s linear infinite;
+    mask: 
+      linear-gradient(#000 0 0) content-box, 
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    z-index: -1;
+  }
+  
+  @keyframes spinBorder {
+    0% {
+      transform: rotate(0turn);
+    }
+    100% {
+      transform: rotate(1turn);
+    }
+  }
+  
