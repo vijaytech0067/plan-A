@@ -19,18 +19,6 @@ const incidentIcon = L.icon({
   iconAnchor: [15, 30],
   popupAnchor: [0, -30],
 });
-const getSeverityClass = (severity: string = '') => {
-  switch (severity) {
-    case 'High':
-      return 'bg-red-100 text-red-800';
-    case 'Medium':
-      return 'bg-yellow-100 text-yellow-800';
-    case 'Low':
-      return 'bg-green-100 text-green-800';
-    default:
-      return 'bg-gray-100 text-gray-800';
-  }
-};
 
 const defaultIcon = L.icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png',
@@ -50,7 +38,7 @@ const destinationIcon = L.icon({
 
 export default function MapPage() {
   const [incidents, setIncidents] = useState([]);
-  const [userLocation, setUserLocation] = useState<{lat: number; lng: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [destination, setDestination] = useState('');
   const [destinationCoord, setDestinationCoord] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -59,10 +47,9 @@ export default function MapPage() {
     duration: number;
     route: [number, number][];
   };
-  
+
   const [routeInfo, setRouteInfo] = useState<RouteInfo | null>(null);
   const [routeIncidents, setRouteIncidents] = useState<any[]>([]);
-  
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -77,10 +64,10 @@ export default function MapPage() {
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
         setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setError(null); // Clear error when position is successfully fetched
+        setError(null);
       },
       (err) => {
-        setError('Geolocation error: ' + err.message); // Set the error message here
+        setError('Geolocation error: ' + err.message);
       },
       {
         enableHighAccuracy: true,
@@ -96,27 +83,26 @@ export default function MapPage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setUserLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
-        setError(null); // Clear error when position is successfully fetched
+        setError(null);
       },
       (err) => {
-        setError('Geolocation error: ' + err.message); // Set the error message here
+        setError('Geolocation error: ' + err.message);
       }
     );
   };
 
   const geocodeDestination = async (place: string): Promise<{ lat: number; lng: number }> => {
-    if (!place || place.trim() === '') {
+    if (!place.trim()) {
       throw new Error('Invalid destination');
     }
-  
+
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(place)}&format=json&limit=1`;
     const { data } = await axios.get(url);
     if (data.length === 0) throw new Error('Destination not found');
-  
+
     const { lat, lon } = data[0];
     return { lat: Number(lat), lng: Number(lon) };
   };
-  
 
   const findRoute = async () => {
     if (!userLocation || !destination) {
@@ -154,24 +140,23 @@ export default function MapPage() {
       setError(null);
     } catch (e) {
       setError('An error occurred while finding the route: ' + (e instanceof Error ? e.message : String(e)));
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
 
   const MapUpdater = ({ position }: { position: { lat: number; lng: number } | null }) => {
     const map = useMap();
-  
+
     useEffect(() => {
       if (position) {
-        // Only update the map view if position is defined
         map.setView([position.lat, position.lng], 14);
       }
     }, [position, map]);
-  
+
     return null;
   };
-  
+
   return (
     <div className="relative h-screen w-screen">
       {/* Controls */}
@@ -227,9 +212,7 @@ export default function MapPage() {
             </Popup>
           </Marker>
         ))}
-
-
-</MapContainer>
+      </MapContainer>
 
       {/* Incident Lists */}
       <div className="absolute bottom-4 right-4 z-[1000] w-[300px] max-h-[300px] overflow-y-auto bg-white/90 backdrop-blur-md shadow-lg rounded-xl p-4">
@@ -247,21 +230,8 @@ export default function MapPage() {
                 </div>
               </div>
             ))}
-            <hr className="my-2" />
           </>
         )}
-        <h3 className="text-lg font-semibold mb-2">All Incidents</h3>
-        {incidents.map((inc, idx) => (
-          <div key={`all-${idx}`} className="mb-2">
-            <div className={`px-3 py-2 rounded-lg text-sm font-medium shadow-sm ${
-              inc.severity === 'High' ? 'bg-red-100 text-red-800'
-              : inc.severity === 'Medium' ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-green-100 text-green-800'
-            }`}>
-              {inc.type} @ {inc.location} ({inc.severity})
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
