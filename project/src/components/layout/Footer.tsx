@@ -31,25 +31,32 @@ const Footer: React.FC = () => {
               AI-powered traffic optimization for a smoother commute.
             </p>
             <div className="mt-4 flex space-x-4">
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-            </div>
+  <a
+    href="https://github.com/vijaytech0067"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 hover:text-white active:text-blue-400 transition-colors"
+  >
+    <Github className="h-5 w-5" />
+  </a>
+  <a
+    href="https://x.com/SVijay34843?t=jV0WbFO-U8O5QI_76CVmEA&s=09"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 hover:text-white transition-colors"
+  >
+    <Twitter className="h-5 w-5" />
+  </a>
+  <a
+    href="https://www.linkedin.com/in/s-vijay-0838742a5?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-gray-400 hover:text-white active:text-blue-400 transition-colors"
+  >
+    <Linkedin className="h-5 w-5" />
+  </a>
+</div>
+
           </div>
           <div>
             <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
